@@ -1,9 +1,9 @@
 import { startLoading, stopLoading, loadingMessage } from './loading'
-import { loadVideo } from './youtube-api'
+import { getVideoId, loadVideo } from './youtube-api'
 
 const form = document.querySelector('#form')
 
-form.addEventListener('submit', (e) => {
+form.addEventListener('submit', async (e) => {
     e.preventDefault()
 
     try {
@@ -12,7 +12,11 @@ form.addEventListener('submit', (e) => {
 
         const formData = new FormData(form)
         const url = formData.get('url')
-        loadVideo(url)
+        await loadVideo(url)
+
+        loadingMessage('Conectando com o Back end')
+        await axios.get('http://localhost:3333/audio?v=' + getVideoId(url))
+
     } catch (error) {
         console.log('submit_error', error)
     } finally {

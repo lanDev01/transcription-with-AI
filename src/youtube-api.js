@@ -9,7 +9,7 @@ firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
 Window.YTPlayer = null
 
-function getVideoId(url) {
+export function getVideoId(url) {
     const [part1, part2] = url.split('?v=')
     const [videoId] = part2.split('&')
     return videoId
@@ -18,7 +18,12 @@ function getVideoId(url) {
 export function loadVideo(url) {
     loadingMessage('Carregando video do Youtube')
 
-    window.YTPlayer = new YT.Player('youtubeVideo', {
-        videoId: getVideoId(url)
+    return new Promise((resolve, reject) => { 
+        window.YTPlayer = new YT.Player('youtubeVideo', {
+            videoId: getVideoId(url),
+            events: {
+                'onReady': () => resolve()
+              }
+        })
     })
 }
