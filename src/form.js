@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { startLoading, stopLoading, loadingMessage } from './loading'
 import { getVideoId, loadVideo } from './youtube-api'
 
@@ -14,7 +15,7 @@ form.addEventListener('submit', async (e) => {
         const url = formData.get('url')
         await loadVideo(url)
 
-        loadingMessage('Conectando com o Back end')
+        loadingMessage('Baixando e convertando o video')
         await axios.get('http://localhost:3333/audio?v=' + getVideoId(url))
 
     } catch (error) {
